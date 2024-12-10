@@ -16,24 +16,16 @@ exec(open(scriptName).read())
     }
 }
 
-async function processFolderAndRunScript(scriptName) {
-    const folderInput = document.createElement("input");
-    folderInput.type = "file";
-    folderInput.webkitdirectory = true; // Allow folder selection
+async function selectFilesAndRunScript(scriptName) {
+    const fileInput = document.createElement("input");
+    fileInput.type = "file";
+    fileInput.accept = ".txt"; // Allow only .txt files
+    fileInput.multiple = true; // Allow selecting multiple files
 
-    folderInput.addEventListener("change", async () => {
-        const files = Array.from(folderInput.files);
-        const txtFiles = files.filter(file => file.name.endsWith(".txt"));
-
-        if (txtFiles.length === 0) {
-            alert("No .txt files found in the selected folder!");
-            return;
-        }
-
-        // Extract the folder path from the first file's relative path
-        const folderPath = txtFiles[0]?.webkitRelativePath?.split('/')[0];
-        if (!folderPath) {
-            alert("No folder selected!");
+    fileInput.addEventListener("change", async () => {
+        const files = Array.from(fileInput.files);
+        if (files.length === 0) {
+            alert("No .txt files selected!");
             return;
         }
 
@@ -44,17 +36,17 @@ async function processFolderAndRunScript(scriptName) {
             return;
         }
 
-        // Pass the folder path and save location to the script
-        const txtFilePaths = txtFiles.map(file => file.webkitRelativePath);
-        await loadPyodideAndRunWithArgs(scriptName, [folderPath, saveLocation, ...txtFilePaths]);
+        // Collect file paths for processing
+        const filePaths = files.map(file => file.name); // Using file names for simplicity
+        await loadPyodideAndRunWithArgs(scriptName, [saveLocation, ...filePaths]);
     });
 
-    folderInput.click();
+    fileInput.click(); // Trigger file input dialog
 }
 
 function bindButtonToScript(buttonId, scriptName) {
     document.getElementById(buttonId).addEventListener("click", () => {
-        processFolderAndRunScript(scriptName);
+        selectFilesAndRunScript(scriptName);
     });
 }
 
