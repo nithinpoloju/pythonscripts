@@ -1,0 +1,70 @@
+body {
+    display: grid;
+    justify-items: center;          /* Centers the items horizontally */
+    align-items: start;             /* Aligns the items at the top */
+    background-color: hsla(0, 0%, 90%, 0.90);
+    margin: 0;
+    height: 100vh;
+    grid-template-columns: repeat(3, 1fr);  /* Three equal columns */
+    grid-gap: 20px;                 /* Space between containers */
+    padding: 20px;
+}
+
+h1 {
+    margin: 20px 0;
+    padding: 10px;
+    grid-column: span 3;           /* Makes the title span across all 3 columns */
+}
+
+.container {
+    display: flex;
+    user-select: none;
+    flex-direction: column;           
+    justify-content: center;       
+    align-items: center;   
+    width: 300px;
+    padding: 1rem;
+    height: 200px;
+    cursor:pointer;     
+    border-radius: 10px;
+    background: linear-gradient(45deg, #f8f1e1, #f1d8e3); /* Gradient background */
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);   /* Optional: adds a little shadow */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+}
+
+#container1 {
+    background: linear-gradient(45deg, antiquewhite, lightblue); /* Two-color gradient */
+}
+#container2 {
+    background: linear-gradient(45deg, rgb(238, 229, 216), rgb(249, 202, 154)); /* Gradient of light colors */
+}
+#container3 {
+    background: linear-gradient(45deg, rgb(244, 244, 194), #f1e7d6); /* Soft gradient of light colors */
+}
+
+.container:hover {
+    transform: scale(1.00001);
+    box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.buttons {
+    background: linear-gradient(45deg, rgb(178, 227, 135), #63953cc3);
+    padding: 10px 25px; /* Increased padding for larger buttons */
+    font-size: 16px;  /* Slightly larger font size */
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    margin-top: auto;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.buttons:hover {
+    transform: scale(1.08);
+    background-color: #508d2f; /* Optional: change button color on hover */
+}
+
+.buttons:active {
+    transform: scale(0.99);
+    background-color: #2e4123;
+}
