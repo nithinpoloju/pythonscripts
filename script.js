@@ -16,35 +16,45 @@ exec(open(scriptName).read())
     }
 }
 
-async function runScriptWithFolder(scriptName) {
-    // Create and simulate a file input element to select a folder
+async function processFolderAndRunScript(scriptName) {
     const folderInput = document.createElement("input");
     folderInput.type = "file";
     folderInput.webkitdirectory = true; // Allow folder selection
+
     folderInput.addEventListener("change", async () => {
-        const folderPath = Array.from(folderInput.files)[0]?.webkitRelativePath?.split('/')[0];
+        const files = Array.from(folderInput.files);
+        const txtFiles = files.filter(file => file.name.endsWith(".txt"));
+
+        if (txtFiles.length === 0) {
+            alert("No .txt files found in the selected folder!");
+            return;
+        }
+
+        // Extract the folder path from the first file's relative path
+        const folderPath = txtFiles[0]?.webkitRelativePath?.split('/')[0];
         if (!folderPath) {
             alert("No folder selected!");
             return;
         }
 
         // Prompt the user for save location
-        const saveLocation = prompt("Enter the save location (including file name):");
+        const saveLocation = prompt("Enter the save location (output directory):");
         if (!saveLocation) {
             alert("No save location provided!");
             return;
         }
 
-        // Run the specified Python script with the folder path and save location
-        await loadPyodideAndRunWithArgs(scriptName, [folderPath, saveLocation]);
+        // Pass the folder path and save location to the script
+        const txtFilePaths = txtFiles.map(file => file.webkitRelativePath);
+        await loadPyodideAndRunWithArgs(scriptName, [folderPath, saveLocation, ...txtFilePaths]);
     });
 
-    folderInput.click(); // Simulate a click to open the folder selection dialog
+    folderInput.click();
 }
 
 function bindButtonToScript(buttonId, scriptName) {
     document.getElementById(buttonId).addEventListener("click", () => {
-        runScriptWithFolder(scriptName);
+        processFolderAndRunScript(scriptName);
     });
 }
 
