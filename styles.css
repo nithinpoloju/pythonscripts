@@ -15,6 +15,14 @@ h1 {
     padding: 10px;
     grid-column: span 3;           /* Makes the title span across all 3 columns */
 }
+h3{
+    font-family: Arial, Helvetica, sans-serif;
+    display: flex;
+    width: 250px;
+    margin: auto;
+    justify-content: center;
+    align-items: center;
+}
 
 .container {
     display: flex;
